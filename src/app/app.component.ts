@@ -27,14 +27,15 @@ export class AppComponent {
     this.feedbackService.getTasks(this.feedbacks).subscribe(fb => 
         this.feedbacks = fb);
   }
-  ondelete(id:Number) {
-    if(!id){
-        return;
-      }
-      this.feedbackService.deleteTask(id).subscribe(() => {
-        this.feedbacks = this.feedbacks.filter((f) => f.id !== id);
-    });
-  }
+ondelete(id:Number) {
+  if(!id){
+      return;
+    }
+    this.feedbackService.deleteTask(id).subscribe(() => {
+      this.feedbacks = this.feedbacks.filter((f) => f.id !== id);
+  });
+  this.resetForm();
+}
 onedit(feedback:feedback) {
   this.feedbackForm = {...feedback};
 }
@@ -43,7 +44,6 @@ submitOrUpdateFeedback() {
   if(this.feedbackForm.id) {
       this.feedbackService.editTask(this.feedbackForm.id, this.feedbackForm).subscribe((updated) => {
         const index = this.feedbacks.findIndex((feedback) => feedback.id === updated.id);
-        console.log(index);
         if(index !== -1) {
           this.feedbacks[index] = updated;
           this.resetForm();
@@ -56,13 +56,12 @@ submitOrUpdateFeedback() {
       this.resetForm();
     })
     }
-  }
-resetForm() {
+}
+  resetForm() {
     this.feedbackForm = {
         name: '',
         course: 'Angular',
         comment: 'Excellent'
-      }
+    }
   }
-
 }
